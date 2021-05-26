@@ -23,15 +23,14 @@ class BotsPage extends Component {
     .catch(err => console.error(err))
   }
 
-  addBotsToArmy = (bot) => {
-    if(!this.state.army.includes(bot))
-    {
-      this.setState({army: [...this.state.army, bot]})
-    }
+  addBotsToArmy = (botToAdd) => {
+    botToAdd.inArmy = true;
+    this.setState({bots: this.state.bots.map(bot => bot === botToAdd ? botToAdd : bot)})
   }
 
   removeBotsFromArmy = (botToRemove) => {
-    this.setState({army: [...this.state.army].filter(bot => bot !== botToRemove)})
+    botToRemove.inArmy = false;
+    this.setState({bots: this.state.bots.map(bot => bot === botToRemove ? botToRemove : bot)})
   }
 
   deleteBot = (botToDelete) => {
@@ -43,7 +42,6 @@ class BotsPage extends Component {
     .then(() => {
       this.setState({
         bots: this.state.bots.filter(bot => bot !== botToDelete),
-        army: this.state.army.filter(bot => bot !== botToDelete)
       })
     })
     .catch(err => console.error(err))
@@ -52,8 +50,8 @@ class BotsPage extends Component {
 
   render() {
     return <div>
-        <YourBotArmy army={this.state.army} removeBotFromArmy={this.removeBotsFromArmy} deleteBot={this.deleteBot} />
-        <BotCollection bots={this.state.bots} addBotToArmy={this.addBotsToArmy} deleteBot={this.deleteBot}/>
+        <YourBotArmy army={this.state.bots.filter(bot => bot.inArmy)} removeBotFromArmy={this.removeBotsFromArmy} deleteBot={this.deleteBot} />
+        <BotCollection bots={this.state.bots.filter(bot => !bot.inArmy)} addBotToArmy={this.addBotsToArmy} deleteBot={this.deleteBot}/>
       </div>;
   }
 }
