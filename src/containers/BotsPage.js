@@ -12,7 +12,6 @@ const headers = {
 class BotsPage extends Component {
   state = {
     bots: [],
-    army: []
   }
 
   //get all bots from database 
@@ -34,7 +33,6 @@ class BotsPage extends Component {
   }
 
   deleteBot = (botToDelete) => {
-    // console.log(botToDelete)
     fetch(`${botsUrl}/${botToDelete.id}`, {
       method: 'DELETE',
       headers
@@ -45,13 +43,22 @@ class BotsPage extends Component {
       })
     })
     .catch(err => console.error(err))
-
   }
 
   render() {
     return <div>
-        <YourBotArmy army={this.state.bots.filter(bot => bot.inArmy)} removeBotFromArmy={this.removeBotsFromArmy} deleteBot={this.deleteBot} />
-        <BotCollection bots={this.state.bots.filter(bot => !bot.inArmy)} addBotToArmy={this.addBotsToArmy} deleteBot={this.deleteBot}/>
+        <YourBotArmy army={this.state.bots.filter(bot => bot.inArmy)} 
+          removeBotFromArmy={this.removeBotsFromArmy} 
+          deleteBot={this.deleteBot} 
+        />
+        
+        <BotCollection 
+          bots={this.state.bots.filter(bot => !bot.inArmy)} 
+          addBotToArmy={this.addBotsToArmy} 
+          deleteBot={this.deleteBot}
+          displayBot={this.displaySingleBot}
+        />
+      
       </div>;
   }
 }
